@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     outputs:
       hashes: ${{ steps.hash.outputs.hashes }}
 
@@ -14,17 +14,15 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: setup .NET core
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0
+      - name: setup msBuild
+        uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
 
-      - name: restore deps
-        run: dotnet restore src/Sample.Core
+      - name: nuget restore dependencies
+        run: nuget restore slsa-poc.sln
 
-      - name: build artifacts
+      - name: msbuild artifacts
         id: build
-        run: dotnet build src/Sample.Core/ --configuration Release --no-restore
+        run: msbuild src/slsa-poc.csproj -verbosity:diag -p:Configuration=Release
 
       - name: generate hashes
         shell: bash
@@ -39,7 +37,7 @@ jobs:
         uses: "actions/upload-artifact@v3.1.2"
         with:
           name: cs_artifact
-          path: src/Sample.Core/bin/Release/net7.0
+          path: src/bin/Release/net7.0
           if-no-files-found: error
           retention-days: 5
 
