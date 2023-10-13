@@ -1,4 +1,4 @@
-name: .NET test
+name: slsa prov gen
 on:
   workflow_dispatch:
   release:
@@ -23,6 +23,9 @@ jobs:
       - name: msbuild artifacts
         id: build
         run: msbuild src/slsa-poc.csproj -verbosity:diag -p:Configuration=Release
+
+      - name: list dir
+        run: dir /s /b /o:gn
 
       - name: generate hashes
         shell: bash
