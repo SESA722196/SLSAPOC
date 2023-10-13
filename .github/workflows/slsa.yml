@@ -1,0 +1,100 @@
+name: .NET test
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      hashes: ${{ steps.hash.outputs.hashes }}
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup msBuild
+        uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
+
+      - name: nuget restore dependencies
+        run: nuget restore slsa-poc.sln
+
+      - name: msbuild artifacts
+        id: build
+        run: msbuild src/slsa-poc.csproj -verbosity:diag -p:Configuration=Release
+
+      - name: generate hashes
+        shell: bash
+        id: hash
+        run: |
+          cd src/Sample.Core/bin/Release/net7.0
+          ls -R
+          HASHES=$(sha256sum * | base64 -w0)
+          echo "hashes=$HASHES" >> "$GITHUB_OUTPUT"
+
+      - name: upload artifacts
+        uses: "actions/upload-artifact@v3.1.2"
+        with:
+          name: cs_artifact
+          path: src/bin/Release/net7.0
+          if-no-files-found: error
+          retention-days: 5
+
+  provenance:
+    needs: [build]
+    permissions:
+      actions: read
+      id-token: write
+      contents: write
+    uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.7.0
+    with:
+      base64-subjects: "${{ needs.build.outputs.hashes }}"
+      upload-assets: true
+      upload-tag-name: "v0.0.1"
+      provenance-name: "cs_artifact.intoto.jsonl"
+
+  sign-verify:
+    needs: [build, provenance]
+    runs-on: "ubuntu-latest"
+    steps:
+      # - name: install cosign
+      #   uses: sigstore/cosign-installer@v3.1.1
+      #   with:
+      #     cosign-release: main
+
+      - name: Install slsa-verifier
+        uses: slsa-framework/slsa-verifier/actions/installer@v2.4.0
+
+      - name: download artifacts
+        uses: "actions/download-artifact@v3.0.2"
+        with:
+          name: cs_artifact
+          path: build/
+
+      - name: download provenance
+        uses: "actions/download-artifact@v3.0.2"
+        with:
+          name: cs_artifact.intoto.jsonl
+
+      - name: display struture of downloaded files
+        run: ls -R
+
+      # - name: sign blob
+      #   run: |
+      #     ls -R
+      #     cosign sign-blob cs_artifact.intoto.jsonl --bundle cosign.bundle
+      #     cat cosign.bundle
+
+      - name: Verify artifact provenance
+        run: |
+          slsa-verifier verify-artifact build/Sample.Core.dll \
+          --provenance-path cs_artifact.intoto.jsonl \
+          --source-uri github.schneider-electric.com/DGPSO/slsa-poc \
+          --source-branch dev \
+          --print-provenance
+
+      - name: list dir
+        run: ls -R
+
+        # add cosign signature after build/provenance generation add signature to verify artifact
