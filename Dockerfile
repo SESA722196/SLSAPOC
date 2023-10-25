@@ -8,4 +8,4 @@ RUN dir
 
 RUN dotnet restore 
 
-CMD ["echo", "'hello'"]
+CMD ["dotnet", "build", "slsa-poc.csproj"]

@@ -1,0 +1,24 @@
+name: docker build test
+on:
+  workflow_dispatch:
+  release:
+    types: [created]
+
+jobs: 
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@e2f20e631ae6d7dd3b768f56a5d2af784dd54791
+
+            - name: setup qemu 
+              uses: docker/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8
+
+            - name: setup docker buildx 
+              uses: docker/setup-buiuldx-action@dc7b9719a96d48369863986a06765841d7ea23f6
+              with:
+                install: true
+
+            - name: build dockerfile
+              run: |
+                docker build . --progress plain
