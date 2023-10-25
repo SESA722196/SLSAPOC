@@ -16,7 +16,7 @@ jobs:
         uses: docker/setup-qemu-action@8b122486cedac8393e77aa9734c3528886e4a1a8
 
       - name: setup docker buildx 
-        uses: docker/setup-buiuldx-action@dc7b9719a96d48369863986a06765841d7ea23f6
+        uses: docker/setup-buiuldx-action@v2.0.0
         with:
           install: true
 
