@@ -1,2 +1,2 @@
-# slsa-poc
-SLSA build workflow playground
+# SLSAPOC
+dgpso google slsa proof of concept 
