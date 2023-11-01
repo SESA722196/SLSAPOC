@@ -20,9 +20,12 @@ jobs:
       - name: nuget restore dependencies
         run: nuget restore slsa-poc.sln
 
+      - name: list dir
+        run: dir /s /b /0:gn
+
       - name: msbuild artifacts
         id: build
-        run: msbuild src/slsa-poc.csproj -verbosity:diag -p:Configuration=Release
+        run: msbuild slsa-poc.csproj -verbosity:diag -p:Configuration=Release
 
       - name: list dir
         run: dir /s /b /o:gn
