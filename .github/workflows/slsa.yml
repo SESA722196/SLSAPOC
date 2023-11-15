@@ -29,18 +29,13 @@ jobs:
       - name: list dir
         run: dir
 
-      - name: msbuild artifacts
-        id: build
-        run: dotnet build slsa-poc.sln -v diag ---configuration=Release
-
-      - name: list dir
-        run: dir /s /b /o:gn
+        # WixMSI -> D:\a\SLSAPOC\SLSAPOC\WixMSI\bin\Release\WixMSI.msi
 
       - name: generate hashes
         shell: bash
         id: hash
         run: |
-          cd src/Sample.Core/bin/Release/net7.0
+          cd WixMsi/bin/Release/
           ls -R
           HASHES=$(sha256sum * | base64 -w0)
           echo "hashes=$HASHES" >> "$GITHUB_OUTPUT"
@@ -49,7 +44,7 @@ jobs:
         uses: "actions/upload-artifact@v3.1.2"
         with:
           name: cs_artifact
-          path: src/bin/Release/net7.0
+          path: WixMsi/bin/Release/
           if-no-files-found: error
           retention-days: 5
 
