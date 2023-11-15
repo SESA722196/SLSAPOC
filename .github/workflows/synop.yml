@@ -31,7 +31,7 @@ jobs:
     - uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
   
     - name: restore deps 
-      runs: nuget restore slsa-poc.sln
+      run: nuget restore slsa-poc.sln
 
     - name: coverity download
       if: ${{ github.event.name != 'pull_request' }}
