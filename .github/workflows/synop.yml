@@ -19,7 +19,7 @@ jobs:
       COV_TOKEN: ${{ secrets.COV_TOKEN }}
       CSA: cov-analysis-linux64.3.2
       COVERITY_PROJECT: slsa-poc
-      BUILD_CMD: msbuild 
+      BUILD_CMD: msbuild slsa-poc.sln
 
 
     steps:
@@ -41,7 +41,8 @@ jobs:
         /tmp/$CSA/bin/cov-configure --cs
 
 
-	
-
-
-
+    - name: coverity scan
+      run: |
+        export PATH=$PATH:/tmp/$CSA/bin
+        set -x
+        cov-build --dir idir --fs-capture-search $GITHUB_WORKSPACE $BUILD_CMD
