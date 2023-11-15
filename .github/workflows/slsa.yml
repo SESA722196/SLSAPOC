@@ -44,7 +44,7 @@ jobs:
         uses: "actions/upload-artifact@v3.1.2"
         with:
           name: cs_artifact
-          path: WixMsi/bin/Release/
+          path: WixMSI/bin/Release/
           if-no-files-found: error
           retention-days: 5
 

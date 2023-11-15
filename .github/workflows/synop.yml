@@ -1,0 +1,47 @@
+name: coverity scanner github runner
+on:
+  push:
+    branches: [ master, stage, 'releases/**' ]
+  pull_request: 
+    branches: [ master, stage, 'releases/**' ]
+  workflow_dispatch:
+  release:
+    types: [created]
+
+
+jobs:
+  Coverity:	
+    runs-on: ubuntu-latest
+
+    env:
+      COV_URL: ${{ secrets.COV_URL }}
+      COV_USER: ${{ secrets.COV_USER }}
+      COV_TOKEN: ${{ secrets.COV_TOKEN }}
+      CSA: cov-analysis-linux64.3.2
+      COVERITY_PROJECT: slsa-poc
+      BUILD_CMD: msbuild 
+
+
+    steps:
+
+    - name: checkout repo
+      uses: actions/checkout@v4
+
+    - uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
+    - uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
+  
+    - name: restore deps 
+      runs: nuget restore slsa-poc.sln
+
+    - name: coverity download
+      if: ${{ github.event.name != 'pull_request' }}
+      run: |
+        curl -fLsS --user $COV_USER:$COV_TOKEN $COV_URL/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
+        curl -fLsS --user $COV_USER:$COV_TOKEN -o /tmp/$CSA/bin/license.dat $COV_URL/downloadFile.htm?fn=license.dat
+        /tmp/$CSA/bin/cov-configure --cs
+
+
+	
+
+
+
