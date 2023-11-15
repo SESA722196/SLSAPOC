@@ -17,8 +17,14 @@ jobs:
       - name: setup msbuild
         uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
 
-      - name: nuget restore dependencies
-        run: msbuild -t:restore slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
+      - name: setup nuget
+        uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
+
+      - name: nuget retsore
+        run: nuget restore
+
+      - name: build msi file
+        run: msbuild slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
 
       - name: list dir
         run: dir /s /b /0:gn
