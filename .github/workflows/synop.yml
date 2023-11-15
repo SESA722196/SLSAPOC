@@ -39,7 +39,7 @@ jobs:
 
     - name: coverity download
       run: |
-        curl -fLsS --user $COV_USER:$COV_TOKEN $COV_URL/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
+        curl $COV_URL/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
         curl -fLsS --user $COV_USER:$COV_TOKEN -o /tmp/$CSA/bin/license.dat $COV_URL/downloadFile.htm?fn=license.dat
         /tmp/$CSA/bin/cov-configure --cs
 
