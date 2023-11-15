@@ -27,7 +27,7 @@ jobs:
         run: msbuild slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
 
       - name: list dir
-        run: dir /s /b 
+        run: dir -s -b
 
       - name: msbuild artifacts
         id: build
