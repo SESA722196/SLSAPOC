@@ -17,7 +17,7 @@ jobs:
       COV_URL: ${{ secrets.COV_URL }}
       COV_USER: ${{ secrets.COV_USER }}
       COV_TOKEN: ${{ secrets.COV_TOKEN }}
-      CSA: cov-analysis-win64-2023.3.2
+      CSA: cov-analysis-linux64-2023.3.2
       COV_PROJ: dgpso-slsa-poc
       BUILD_CMD: ./build.sh slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
 
@@ -30,14 +30,16 @@ jobs:
     - uses: actions/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
     - uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
   
-    - run: ls -R
+    - run: |
+        ls -R 
+        echo $CSA
   
     - name: restore deps 
       run: nuget restore slsa-poc.sln
 
     - name: coverity download
       run: |
-        curl -fLsS --user $COV_USER:$COV_TOKEN $COV_URL/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
+        curl -fLsS --user ${{ secrets.COV_USER }}:${{ secrets.COV_TOKEN }} ${{ secrets.COV_USER }}/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
         curl -fLsS --user $COV_USER:$COV_TOKEN -o /tmp/$CSA/bin/license.dat $COV_URL/downloadFile.htm?fn=license.dat
         /tmp/$CSA/bin/cov-configure --cs
 
