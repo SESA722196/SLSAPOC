@@ -1,4 +1,4 @@
-name: coverity scanner github runner
+name: coverity scanner
 on:
   push:
     branches: [ master, stage, 'releases/**' ]
@@ -27,7 +27,7 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v4
 
-    - uses: microsoft/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
+    - uses: actions/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
     - uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
   
     - run: ls -R
