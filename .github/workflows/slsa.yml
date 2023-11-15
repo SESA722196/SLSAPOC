@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: setup msbuild
-        uses: microsoft/setup-msbuildt@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
+        uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
 
       - name: nuget restore dependencies
         run: msbuild -t:restore slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
