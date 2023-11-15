@@ -14,11 +14,11 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: setup dotnet
-        uses: actions/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
+      - name: setup msbuild
+        uses: microsoft/setup-msbuildt@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
 
       - name: nuget restore dependencies
-        run: dotnet restore slsa-poc.sln
+        run: msbuild -t:restore slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
 
       - name: list dir
         run: dir /s /b /0:gn
