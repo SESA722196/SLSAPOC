@@ -96,10 +96,10 @@ jobs:
 
       - name: Verify artifact provenance
         run: |
-          slsa-verifier verify-artifact build/Sample.Core.dll \
+          slsa-verifier verify-artifact build/WixMSI.wixpdb \
           --provenance-path cs_artifact.intoto.jsonl \
-          --source-uri github.schneider-electric.com/DGPSO/slsa-poc \
-          --source-branch dev \
+          --source-uri github.com/SESA722196/SLSAPOC \
+          --source-branch main \
           --print-provenance
 
       - name: list dir
