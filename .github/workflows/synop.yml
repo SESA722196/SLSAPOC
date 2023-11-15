@@ -11,15 +11,15 @@ on:
 
 jobs:
   Coverity:	
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     env:
       COV_URL: ${{ secrets.COV_URL }}
       COV_USER: ${{ secrets.COV_USER }}
       COV_TOKEN: ${{ secrets.COV_TOKEN }}
-      CSA: cov-analysis-linux64.3.2
-      COVERITY_PROJECT: slsa-poc
-      BUILD_CMD: msbuild slsa-poc.sln
+      CSA: cov-analysis-win64-2023.3.2
+      COV_PROJ: dgpso-slsa-poc
+      BUILD_CMD: ./build.sh slsa-poc.sln /p:Configuration=Release /p:Platform="x86"
 
 
     steps:
@@ -27,14 +27,15 @@ jobs:
     - name: checkout repo
       uses: actions/checkout@v4
 
-    - uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
+    - uses: microsoft/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
     - uses: nuget/setup-nuget@795d81930e6f583d6dbe984a5634efe5de9e54a7
+  
+    - run: ls -R
   
     - name: restore deps 
       run: nuget restore slsa-poc.sln
 
     - name: coverity download
-      if: ${{ github.event.name != 'pull_request' }}
       run: |
         curl -fLsS --user $COV_USER:$COV_TOKEN $COV_URL/downloadFile.htm?fn=$CSA.tar.gz | tar -C /tmp -xzf -
         curl -fLsS --user $COV_USER:$COV_TOKEN -o /tmp/$CSA/bin/license.dat $COV_URL/downloadFile.htm?fn=license.dat
@@ -42,7 +43,11 @@ jobs:
 
 
     - name: coverity scan
+      if: ${{ github.event.name != 'pull_request' }}
       run: |
         export PATH=$PATH:/tmp/$CSA/bin
         set -x
         cov-build --dir idir --fs-capture-search $GITHUB_WORKSPACE $BUILD_CMD
+        cov-analyze --dir idir --strip-path $GITHUB_WORKSPACE
+        cov-commit-defects --dir idir --url $COV_URL --stream $COV_PROJ-${GITHUB_REF##*/} --scm git \
+          --description $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID --target $RUNNER_OS --version $GITHUB_SHA
