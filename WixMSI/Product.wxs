@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="WixMSI" Language="1033" Version="1.0.0.0" Manufacturer="Schneider Electric" UpgradeCode="fe6e5ef2-b634-4d52-af9f-24fa0be972d9">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<UIRef Id="WixUI_InstallDir" />
+		<UIRef Id="WixUI_ErrorProgressText" />
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<!-- Define your desired installation directory -->
+				<Directory Id="INSTALLDIR" Name="keycloak">
+					<!-- Add your application files and components here -->
+					<Component>
+						<File Source="WixMSI/keycloak-22.0.5" />
+					</Component>
+					<!-- ... -->
+				</Directory>
+			</Directory>
+		</Directory>
+		<UI>
+			<Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+			<DialogRef Id="BrowseDlg" />
+			<DialogRef Id="DiskCostDlg" />
+			<!-- Add other required dialogs if needed -->
+			<!-- ... -->
+			<Publish Dialog="BrowseDlg" Control="O" Event="DoAction" Value="WixUIValidatePath" Order="3">1</Publish>
+			<Publish Dialog="BrowseDlg" Control="OK" Event="SpawnDialog" Value="InvalidDirDlg" Order="4">
+				<![CDATA[WIXUI_INSTALLDIR_VALID<>\"1\"]]>
+			</Publish>
+			<Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+		</UI>
+	</Fragment>
+</Wix>

@@ -14,18 +14,18 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
 
-      - name: setup msBuild
-        uses: microsoft/setup-msbuild@d3ea839497466fb4c6b91ce85831f3a251a2fe3f
+      - name: setup dotnet
+        uses: actions/setup-dotnet@c7e7147fd3e41056e75a761416c06f5fa781b5fb
 
       - name: nuget restore dependencies
-        run: nuget restore slsa-poc.sln
+        run: dotnet restore slsa-poc.sln
 
       - name: list dir
         run: dir /s /b /0:gn
 
       - name: msbuild artifacts
         id: build
-        run: msbuild slsa-poc.csproj -verbosity:diag -p:Configuration=Release
+        run: dotnet build slsa-poc.sln -v diag ---configuration=Release
 
       - name: list dir
         run: dir /s /b /o:gn
