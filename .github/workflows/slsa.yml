@@ -60,6 +60,7 @@ jobs:
       upload-assets: true
       upload-tag-name: "v0.0.1"
       provenance-name: "cs_artifact.intoto.jsonl"
+      private-repository: true
 
   sign-verify:
     needs: [build, provenance]
