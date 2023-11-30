@@ -69,7 +69,7 @@ jobs:
       # - name: install cosign
       #   uses: sigstore/cosign-installer@v3.1.1
       #   with:
-      #     cosign-release: main
+      #     cosign-release: main test
 
       - name: Install slsa-verifier
         uses: slsa-framework/slsa-verifier/actions/installer@v2.4.0
