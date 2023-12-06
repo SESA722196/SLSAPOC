@@ -20,17 +20,15 @@ jobs:
           distribution: 'oracle'
           java-version: '21'
 
-      - name: list dir
-        run: dir
-
       - name: build keycloak
         run: |
           git clone https://github.com/keycloak/keycloak.git
           cd keycloak
+          echo %cwd%
           ./mvnw clean install -DskipTests
 
       - name: list dir
-        run: dir
+        run: cd keycloak; dir
 
       - name: generate hashes
         shell: bash
