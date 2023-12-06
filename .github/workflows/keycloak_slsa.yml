@@ -29,6 +29,9 @@ jobs:
           cd keycloak
           ./mvnw clean install -DskipTests
 
+      - name: list dir
+        run: dir
+
       - name: generate hashes
         shell: bash
         id: hash
