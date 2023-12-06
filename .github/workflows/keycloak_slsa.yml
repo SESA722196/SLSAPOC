@@ -21,6 +21,7 @@ jobs:
         run: |
           git clone https://github.com/keycloak/keycloak.git
           cd keycloak
+          ./mvnw clean install
 
       - name: generate hashes
         shell: bash
