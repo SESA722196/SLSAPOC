@@ -30,8 +30,8 @@ jobs:
 
       - name: build keycloak
         run: |
-         cd keycloak  
-        ./mvnw clean install -DskipTests
+          cd keycloak  
+          ./mvnw clean install -DskipTests
 
       - name: list downloaded files to find target
         run: cd keycloak; dir
