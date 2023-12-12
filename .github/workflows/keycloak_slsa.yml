@@ -33,7 +33,7 @@ jobs:
       - name: build keycloak
         run: |
           cd keycloak
-          mvn package
+          ./mvnw clean install
 
       - name: run yama memory scan
         run: |
