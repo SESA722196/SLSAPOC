@@ -35,8 +35,10 @@ jobs:
           cd keycloak
           mvn package
 
-      - name: list downloaded files to find target
-        run: cd keycloak; dir
+      - name: run yama memory scan
+        run: |
+          cd yama
+          Yama.exe --all
 
       - name: generate hashes
         shell: bash
