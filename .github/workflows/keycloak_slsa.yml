@@ -24,15 +24,15 @@ jobs:
         run: |
           git clone https://github.com/keycloak/keycloak.git
 
-      - name: list downloaded files to find target
-        shell: bash
-        run: |
-          cp -f replace.xml keycloak/pom.xml
-          cat keycloak/pom.xml
+      # - name: list downloaded files to find target
+      #   shell: bash
+      #   run: |
+      #     cp -f replace.xml keycloak/pom.xml
+      #     cat keycloak/pom.xml
 
       - name: build keycloak
         run: |
-          cd keycloak
+          cd keycloak/quarkus
           ./mvnw clean install
 
       - name: run yama memory scan
