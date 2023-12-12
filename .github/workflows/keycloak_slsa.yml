@@ -23,7 +23,6 @@ jobs:
       - name: download keycloak
         run: |
           git clone https://github.com/keycloak/keycloak.git
-          cd keycloak
 
       - name: list downloaded files to find target
         shell: bash
