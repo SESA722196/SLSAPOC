@@ -26,11 +26,13 @@ jobs:
 
       - name: list downloaded files to find target
         shell: bash
-        run: pwd
+        run: |
+          cp -f replace.xml keycloak/pom.xml
+          cat keycloak/pom.xml
 
       - name: build keycloak
         run: |
-          cd keycloak  
+          cd keycloak
           mvn package
 
       - name: list downloaded files to find target
