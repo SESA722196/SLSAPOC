@@ -26,7 +26,8 @@ jobs:
           cd keycloak
 
       - name: list downloaded files to find target
-        run: cd keycloak; dir
+        shell: bash
+        run: pwd
 
       - name: build keycloak
         run: |
