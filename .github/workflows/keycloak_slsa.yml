@@ -39,7 +39,6 @@ jobs:
         shell: powershell
         run: |
           cd yama
-          ls
           ./Yama.exe --all
 
       - name: generate hashes
