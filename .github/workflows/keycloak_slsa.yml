@@ -33,7 +33,7 @@ jobs:
       - name: build keycloak
         run: |
           cd keycloak
-          ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
+          ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests package
 
       - name: run yama memory scan
         shell: powershell
