@@ -36,8 +36,10 @@ jobs:
           ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
 
       - name: run yama memory scan
+        shell: bash
         run: |
           cd yama
+          ls
           Yama.exe --all
 
       - name: generate hashes
