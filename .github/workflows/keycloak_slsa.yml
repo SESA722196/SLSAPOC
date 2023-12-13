@@ -39,7 +39,7 @@ jobs:
         shell: powershell
         run: |
           cd yama
-          ./Yama.exe --all
+          ./Yama.exe -a -v
 
       - name: generate hashes
         shell: bash
