@@ -36,7 +36,7 @@ jobs:
           ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
 
       - name: run yama memory scan
-        shell: bash
+        shell: powershell
         run: |
           cd yama
           ls
