@@ -45,7 +45,7 @@ jobs:
         shell: bash
         id: hash
         run: |
-          cd keycloak/target/
+          cd keycloak/quarkus/dist/target/
           HASHES=$(sha256sum * | base64 -w0)
           echo "hashes=$HASHES" >> "$GITHUB_OUTPUT"
 
