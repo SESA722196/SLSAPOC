@@ -40,7 +40,7 @@ jobs:
         run: |
           cd yama
           ls
-          Yama.exe --all
+          ./Yama.exe --all
 
       - name: generate hashes
         shell: bash
