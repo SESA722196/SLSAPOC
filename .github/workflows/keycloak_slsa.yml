@@ -33,7 +33,7 @@ jobs:
       - name: build keycloak
         run: |
           cd keycloak/quarkus
-          ./mvnw clean install
+          ./mvnw -pl quarkus/deployment,quarkus/dist -am -DskipTests clean install
 
       - name: run yama memory scan
         run: |
